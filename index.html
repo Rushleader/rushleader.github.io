@@ -11,7 +11,7 @@
 			checkboxes.on("change", function(){ 
 			  checkboxes.each(function(){
 			    checkboxValues[this.id] = this.checked;
-                alert(this.id);
+                alert(this.id); 
 			  });
 			  localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
 			});
