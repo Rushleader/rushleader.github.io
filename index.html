@@ -4,6 +4,9 @@
     	<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
     	<script>
             $(document).ready(function() {
+                // Usage vars
+                var previousIndex = 0;
+
                 // Retrieve storage and items
         		var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
     			var checkboxes = $(':input:checkbox');
@@ -21,17 +24,77 @@
                     localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
                     console.log(checkboxValues);
                 });
+
+                // List all the Quest locations and add them to the selection
+                var zones = $('.questlist');
+                zones.each(function(){
+                    var e = document.createElement('option');
+                    e.value = this.id;
+                    e.label = $(this).attr('name');
+                    $('#current_view').append(e);
+
+                    // While we're at it, hide the questlists
+                    console.log(this.id);
+                    $('#'+ this.id).hide();
+                });
+
+                // Make it respond to changes
+                $(document).on('change', '#current_view', function(e) {
+                    selectedIndex = e.target.selectedIndex;
+                    selectElement = $('#current_view');
+
+                    // Get the option values
+                    previousElement = selectElement[0].options[previousIndex].value;
+                    selectedElement = selectElement[0].options[selectedIndex].value;
+                    
+                    // Hide the previous selection
+                    if (previousIndex > 0) {
+                        $('#' + previousElement).fadeOut(500, function() {
+                            if (selectedIndex > 0) {
+                                $('#' + selectedElement).fadeIn(500);
+                            }    
+                        });
+                    } else if (selectedIndex > 0) {
+                        $('#' + selectedElement).fadeIn(1000);
+                    }
+
+                    // Update the previous selection
+                    previousIndex = selectedIndex;
+                });
             });  
     	</script>
     	<style>
-	    	html, body, table {
+	    	html, body, table, div, label, p {
 	    		width: 99%;
+                font-family: Calibri, sans-serif;
+                overflow: visible;
 	    	}
 
+            #selection_container{
+                border: 2px solid #D4E9FE;
+
+                border-radius: 9px;
+                border-top-left-radius: 9px;
+                border-top-right-radius: 9px;
+                border-bottom-right-radius: 9px;
+                border-bottom-left-radius: 9px;
+            }
+
+            #subcontainer {
+                margin-left:25px;
+            }
+
+            #spacer{
+                height: 25px;
+            }
+
 	    	table {
+                display: table;
+
 	    		text-align: center;
 			    color: black;
 			    background-color: #D4E9FE;
+
 			    border-radius: 9px;
 			    border-top-left-radius: 9px;
 			    border-top-right-radius: 9px;
@@ -125,7 +188,18 @@
     
     </head>
     <body>
-        <table id="container" class="xc1 questlist chronological">
+        <div id="selection_container">
+            <div id="spacer"></div>
+            <div id="subcontainer">
+                <label>Currently viewing</label>
+                <select name="current_view" id="current_view">
+                    <option value="_none">None</option>
+                </select>
+            </div>
+            <div id="spacer"></div>
+        </div>
+        
+        <table id="Colony_9" name="Colony 9 Quests" class="xc1 questlist chronological">
             <tbody>
                 <tr>
                     <th> Have </th>
@@ -141,7 +215,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" id="havet_1" name="have_1" /></td>
+                    <td><input type="checkbox" id="have_1" name="have_1" /></td>
                     <td><input type="checkbox" id="done_1" name="done_1" /></td>
                     <td> -- </td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Biscuits_for_a_Grandson" title="Biscuits for a Grandson">Biscuits for a Grandson</a></td>
@@ -153,7 +227,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" id="havet_2" name="have_2" /></td>
+                    <td><input type="checkbox" id="have_2" name="have_2" /></td>
                     <td><input type="checkbox" id="done_2" name="done_2" /></td>
                     <td> -- </td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Challenge_1_(Colony_9)" title="Challenge 1 (Colony 9)">Challenge 1</a></td>
@@ -163,7 +237,7 @@
                     <td> +50 Affinity<br>1,800 G</td>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" id="havet_3" name="have_3" /></td>
+                    <td><input type="checkbox" id="have_3" name="have_3" /></td>
                     <td><input type="checkbox" id="done_3" name="done_3" /></td>
                     <td> -- </td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Challenge_2_(Colony_9)" title="Challenge 2 (Colony 9)">Challenge 2</a></td>
@@ -172,7 +246,7 @@
                     <td> +50 Affinity<br>1,800 G</td>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" id="havet_4" name="have_4" /></td>
+                    <td><input type="checkbox" id="have_4" name="have_4" /></td>
                     <td><input type="checkbox" id="done_4" name="done_4" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Challenge_3_(Colony_9)" title="Challenge 3 (Colony 9)">Challenge 3</a></td>
@@ -181,7 +255,7 @@
                     <td> +50 Affinity<br>3,000 G</td>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" id="havet_5" name="have_5" /></td>
+                    <td><input type="checkbox" id="have_5" name="have_5" /></td>
                     <td><input type="checkbox" id="done_5" name="done_5" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Collection_Quest_1_(Colony_9)" title="Collection Quest 1 (Colony 9)">Collection Quest 1</a></td>
@@ -190,7 +264,7 @@
                     <td> +50 Affinity<br>500 G</td>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" id="havet_6" name="have_6" /></td>
+                    <td><input type="checkbox" id="have_6" name="have_6" /></td>
                     <td><input type="checkbox" id="done_6" name="done_6" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Collection_Quest_2_(Colony_9)" title="Collection Quest 2 (Colony 9)">Collection Quest 2</a></td>
@@ -199,7 +273,7 @@
                     <td> +50 Affinity<br>300 G</td>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" id="havet_7" name="have_7" /></td>
+                    <td><input type="checkbox" id="have_7" name="have_7" /></td>
                     <td><input type="checkbox" id="done_7" name="done_7" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Collection_Quest_3_(Colony_9)" title="Collection Quest 3 (Colony 9)">Collection Quest 3</a></td>
@@ -208,7 +282,7 @@
                     <td> +50 Affinity<br>800 G</td>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" id="havet_8" name="have_8" /></td>
+                    <td><input type="checkbox" id="have_8" name="have_8" /></td>
                     <td><input type="checkbox" id="done_8" name="done_8" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Collection_Quest_4_(Colony_9)" title="Collection Quest 4 (Colony 9)">Collection Quest 4</a></td>
@@ -217,7 +291,7 @@
                     <td> +50 Affinity<br>300 G</td>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" id="havet_9" name="have_9" /></td>
+                    <td><input type="checkbox" id="have_9" name="have_9" /></td>
                     <td><input type="checkbox" id="done_9" name="done_9" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Delivering_Food" title="Delivering Food">Delivering Food</a></td>
@@ -227,7 +301,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_10" name="have_10" /></td>
-                    <td><input type="checkbox" id="done_10" name="done10" /></td>
+                    <td><input type="checkbox" id="done_10" name="done_10" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Education-Minded_Suzanna" title="Education-Minded Suzanna">Education-Minded Suzanna</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Suzanna" title="Suzanna">Suzanna</a></td>
@@ -236,7 +310,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_11" name="have_11" /></td>
-                    <td><input type="checkbox" id="done_11" name="done11" /></td>
+                    <td><input type="checkbox" id="done_11" name="done_11" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Lonely_Niranira" title="Lonely Niranira">Lonely Niranira</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Niranira_(XC1)" title="Niranira (XC1)">Niranira</a></td>
@@ -245,7 +319,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_12" name="have_12" /></td>
-                    <td><input type="checkbox" id="done_12" name="done12" /></td>
+                    <td><input type="checkbox" id="done_12" name="done_12" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Material_Quest_1_(Colony_9)" title="Material Quest 1 (Colony 9)">Material Quest 1</a></td>
                     <td> Colony 9 Resident (Nopon)</td>
@@ -254,7 +328,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_13" name="have_13" /></td>
-                    <td><input type="checkbox" id="done_13" name="done13" /></td>
+                    <td><input type="checkbox" id="done_13" name="done_13" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Material_Quest_2_(Colony_9)" title="Material Quest 2 (Colony 9)">Material Quest 2</a></td>
                     <td> Colony 9 Resident (Homs Male)</td>
@@ -263,7 +337,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_14" name="have_14" /></td>
-                    <td><input type="checkbox" id="done_14" name="done14" /></td>
+                    <td><input type="checkbox" id="done_14" name="done_14" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Material_Quest_3_(Colony_9)" title="Material Quest 3 (Colony 9)">Material Quest 3</a></td>
                     <td> Colony 9 Resident (Homs Female)</td>
@@ -272,7 +346,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_15" name="have_15" /></td>
-                    <td><input type="checkbox" id="done_15" name="done15" /></td>
+                    <td><input type="checkbox" id="done_15" name="done_15" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Material_Quest_4_(Colony_9)" title="Material Quest 4 (Colony 9)">Material Quest 4</a></td>
                     <td> Colony 9 Resident (Homs Male)</td>
@@ -281,7 +355,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_17" name="have_17" /></td>
-                    <td><input type="checkbox" id="done_17" name="done17" /></td>
+                    <td><input type="checkbox" id="done_17" name="done_17" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_1_-_Part_1_(Colony_9)" title="Monster Quest 1 - Part 1 (Colony 9)">Monster Quest 1 - Part 1</a></td>
                     <td> Defence Force Soldier</td>
@@ -290,7 +364,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_18" name="have_18" /></td>
-                    <td><input type="checkbox" id="done_18" name="done18" /></td>
+                    <td><input type="checkbox" id="done_18" name="done_18" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_1_-_Part_2_(Colony_9)" title="Monster Quest 1 - Part 2 (Colony 9)">Monster Quest 1 - Part 2</a></td>
                     <td> Defence Force Soldier</td>
@@ -299,7 +373,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_19" name="have_19" /></td>
-                    <td><input type="checkbox" id="done_19" name="done19" /></td>
+                    <td><input type="checkbox" id="done_19" name="done_19" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_1_-_Part_3_(Colony_9)" title="Monster Quest 1 - Part 3 (Colony 9)">Monster Quest 1 - Part 3</a></td>
                     <td> Defence Force Soldier</td>
@@ -308,7 +382,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_20" name="have_20" /></td>
-                    <td><input type="checkbox" id="done_20" name="done20" /></td>
+                    <td><input type="checkbox" id="done_20" name="done_20" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_2_-_Part_1_(Colony_9)" title="Monster Quest 2 - Part 1 (Colony 9)">Monster Quest 2 - Part 1</a></td>
                     <td> Defence Force Soldier</td>
@@ -317,7 +391,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_21" name="have_21" /></td>
-                    <td><input type="checkbox" id="done_21" name="done21" /></td>
+                    <td><input type="checkbox" id="done_21" name="done_21" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_2_-_Part_2_(Colony_9)" title="Monster Quest 2 - Part 2 (Colony 9)">Monster Quest 2 - Part 2</a></td>
                     <td> Defence Force Soldier</td>
@@ -326,7 +400,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_22" name="have_22" /></td>
-                    <td><input type="checkbox" id="done_22" name="done22" /></td>
+                    <td><input type="checkbox" id="done_22" name="done_22" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_2_-_Part_3_(Colony_9)" title="Monster Quest 2 - Part 3 (Colony 9)">Monster Quest 2 - Part 3</a></td>
                     <td> Defence Force Soldier</td>
@@ -335,7 +409,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_23" name="have_23" /></td>
-                    <td><input type="checkbox" id="done_23" name="done23" /></td>
+                    <td><input type="checkbox" id="done_23" name="done_23" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_3_-_Part_1_(Colony_9)" title="Monster Quest 3 - Part 1 (Colony 9)">Monster Quest 3 - Part 1</a></td>
                     <td> Colony 9 Resident (Homs Male)</td>
@@ -344,7 +418,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_24" name="have_24" /></td>
-                    <td><input type="checkbox" id="done_24" name="done24" /></td>
+                    <td><input type="checkbox" id="done_24" name="done_24" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_3_-_Part_2_(Colony_9)" title="Monster Quest 3 - Part 2 (Colony 9)">Monster Quest 3 - Part 2</a></td>
                     <td> Colony 9 Resident (Homs Male)</td>
@@ -353,7 +427,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_25" name="have_25" /></td>
-                    <td><input type="checkbox" id="done_25" name="done25" /></td>
+                    <td><input type="checkbox" id="done_25" name="done_25" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_3_-_Part_3_(Colony_9)" title="Monster Quest 3 - Part 3 (Colony 9)">Monster Quest 3 - Part 3</a></td>
                     <td> Colony 9 Resident (Homs Male)</td>
@@ -362,7 +436,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_26" name="have_26" /></td>
-                    <td><input type="checkbox" id="done_26" name="done26" /></td>
+                    <td><input type="checkbox" id="done_26" name="done_26" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_3_-_Part_4_(Colony_9)" title="Monster Quest 3 - Part 4 (Colony 9)">Monster Quest 3 - Part 4</a></td>
                     <td> Colony 9 Resident (Homs Male)</td>
@@ -371,7 +445,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_27" name="have_27" /></td>
-                    <td><input type="checkbox" id="done_27" name="done27" /></td>
+                    <td><input type="checkbox" id="done_27" name="done_27" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_4_-_Part_1_(Colony_9)" title="Monster Quest 4 - Part 1 (Colony 9)">Monster Quest 4 - Part 1</a></td>
                     <td> Defence Force Soldier</td>
@@ -380,7 +454,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_28" name="have_28" /></td>
-                    <td><input type="checkbox" id="done_28" name="done28" /></td>
+                    <td><input type="checkbox" id="done_28" name="done_28" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_4_-_Part_2_(Colony_9)" title="Monster Quest 4 - Part 2 (Colony 9)">Monster Quest 4 - Part 2</a></td>
                     <td> Defence Force Soldier</td>
@@ -389,7 +463,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_29" name="have_29" /></td>
-                    <td><input type="checkbox" id="done_29" name="done29" /></td>
+                    <td><input type="checkbox" id="done_29" name="done_29" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monster_Quest_4_-_Part_3_(Colony_9)" title="Monster Quest 4 - Part 3 (Colony 9)">Monster Quest 4 - Part 3</a></td>
                     <td> Defence Force Soldier</td>
@@ -398,7 +472,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_30" name="have_30" /></td>
-                    <td><input type="checkbox" id="done_30" name="done30" /></td>
+                    <td><input type="checkbox" id="done_30" name="done_30" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Search_Quest_1_(Colony_9)" title="Search Quest 1 (Colony 9)">Search Quest 1</a></td>
                     <td> Colony 9 Resident (Homs Male)</td>
@@ -407,7 +481,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_31" name="have_31" /></td>
-                    <td><input type="checkbox" id="done_31" name="done31" /></td>
+                    <td><input type="checkbox" id="done_31" name="done_31" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Search_Quest_2_(Colony_9)" title="Search Quest 2 (Colony 9)">Search Quest 2</a></td>
                     <td> Colony 9 Resident (Nopon)</td>
@@ -416,7 +490,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_32" name="have_32" /></td>
-                    <td><input type="checkbox" id="done_32" name="done32" /></td>
+                    <td><input type="checkbox" id="done_32" name="done_32" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Search_Quest_3_(Colony_9)" title="Search Quest 3 (Colony 9)">Search Quest 3</a></td>
                     <td> Colony 9 Resident (Homs Female)</td>
@@ -425,7 +499,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_33" name="have_33" /></td>
-                    <td><input type="checkbox" id="done_33" name="done33" /></td>
+                    <td><input type="checkbox" id="done_33" name="done_33" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Search_Quest_4_(Colony_9)" title="Search Quest 4 (Colony 9)">Search Quest 4</a></td>
                     <td> Colony 9 Resident (Homs Male)</td>
@@ -434,7 +508,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_34" name="have_34" /></td>
-                    <td><input type="checkbox" id="done_34" name="done34" /></td>
+                    <td><input type="checkbox" id="done_34" name="done_34" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Broken_Watch" title="The Broken Watch">The Broken Watch</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/D%C3%A9sir%C3%A9e" title="Désirée">Désirée</a></td>
@@ -443,7 +517,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_35" name="have_35" /></td>
-                    <td><input type="checkbox" id="done_35" name="done35" /></td>
+                    <td><input type="checkbox" id="done_35" name="done_35" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Key_to_a_Long_Life" title="The Key to a Long Life">The Key to a Long Life</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Dionysis" title="Dionysis">Dionysis</a></td>
@@ -452,7 +526,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_36" name="have_36" /></td>
-                    <td><input type="checkbox" id="done_36" name="done36" /></td>
+                    <td><input type="checkbox" id="done_36" name="done_36" /></td>
                     <td> ☆1¼</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Request" title="A Young Captain's Request">A Young Captain's Request</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Emmy_Leater" title="Emmy Leater">Emmy Leater</a></td>
@@ -461,7 +535,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_37" name="have_37" /></td>
-                    <td><input type="checkbox" id="done_37" name="done37" /></td>
+                    <td><input type="checkbox" id="done_37" name="done_37" /></td>
                     <td> ☆1½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Curry_Conundrum" title="A Curry Conundrum">A Curry Conundrum</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Giorgio" title="Giorgio">Giorgio</a></td>
@@ -470,7 +544,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_38" name="have_38" /></td>
-                    <td><input type="checkbox" id="done_38" name="done38" /></td>
+                    <td><input type="checkbox" id="done_38" name="done_38" /></td>
                     <td> ☆1½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Rocco%27s_Heartful_Request" title="Rocco's Heartful Request">Rocco's Heartful Request</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Rocco" title="Rocco">Rocco</a></td>
@@ -479,7 +553,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_39" name="have_39" /></td>
-                    <td><input type="checkbox" id="done_39" name="done39" /></td>
+                    <td><input type="checkbox" id="done_39" name="done_39" /></td>
                     <td> ☆2</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Dean%27s_Shady_Request" title="Dean's Shady Request">Dean's Shady Request</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Rocco%27s_Heartful_Request" title="Rocco's Heartful Request">Rocco's Heartful Request</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Dean" title="Dean">Dean</a></td>
@@ -488,7 +562,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_40" name="have_40" /></td>
-                    <td><input type="checkbox" id="done_40" name="done40" /></td>
+                    <td><input type="checkbox" id="done_40" name="done_40" /></td>
                     <td> ☆2</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Pride_and_Courage" title="Pride and Courage">Pride and Courage</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Lonely_Niranira" title="Lonely Niranira">Lonely Niranira</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Lukas" title="Lukas">Lukas</a></td>
@@ -497,7 +571,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_41" name="have_41" /></td>
-                    <td><input type="checkbox" id="done_41" name="done41" /></td>
+                    <td><input type="checkbox" id="done_41" name="done_41" /></td>
                     <td> ☆2½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Education-Crazy_Suzanna" title="Education-Crazy Suzanna">Education-Crazy Suzanna</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Education-Minded_Suzanna" title="Education-Minded Suzanna">Education-Minded Suzanna</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Suzanna" title="Suzanna">Suzanna</a></td>
@@ -506,7 +580,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_42" name="have_42" /></td>
-                    <td><input type="checkbox" id="done_42" name="done42" /></td>
+                    <td><input type="checkbox" id="done_42" name="done_42" /></td>
                     <td> ☆2½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Liliana%27s_Sincere_Request" title="Liliana's Sincere Request">Liliana's Sincere Request</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Dean%27s_Shady_Request" title="Dean's Shady Request">Dean's Shady Request</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Liliana" title="Liliana">Liliana</a></td>
@@ -518,7 +592,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_43" name="have_43" /></td>
-                    <td><input type="checkbox" id="done_43" name="done43" /></td>
+                    <td><input type="checkbox" id="done_43" name="done_43" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Challenge_4_(Colony_9)" title="Challenge 4 (Colony 9)">Challenge 4</a></td>
                     <td> Colony 9 Resident (Nopon)</td>
@@ -530,7 +604,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_44" name="have_44" /></td>
-                    <td><input type="checkbox" id="done_44" name="done44" /></td>
+                    <td><input type="checkbox" id="done_44" name="done_44" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/An_Impoverished_Critic" title="An Impoverished Critic">An Impoverished Critic</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Leopold" title="Leopold">Leopold</a></td>
@@ -539,7 +613,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_45" name="have_45" /></td>
-                    <td><input type="checkbox" id="done_45" name="done45" /></td>
+                    <td><input type="checkbox" id="done_45" name="done_45" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Financial_Planning" title="Financial Planning">Financial Planning</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/An_Impoverished_Critic" title="An Impoverished Critic">An Impoverished Critic</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/King_Squeeze" title="King Squeeze">King Squeeze</a></td>
@@ -548,7 +622,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_46" name="have_46" /></td>
-                    <td><input type="checkbox" id="done_46" name="done46" /></td>
+                    <td><input type="checkbox" id="done_46" name="done_46" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Flattened_Flowers" title="Flattened Flowers">Flattened Flowers</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Fran%C3%A7oise" title="Françoise">Françoise</a></td>
@@ -557,7 +631,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_47" name="have_47" /></td>
-                    <td><input type="checkbox" id="done_47" name="done47" /></td>
+                    <td><input type="checkbox" id="done_47" name="done_47" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Mementos_of_a_Lost_Son" title="Mementos of a Lost Son">Mementos of a Lost Son</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Cheryl" title="Cheryl">Cheryl</a></td>
@@ -566,7 +640,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_48" name="have_48" /></td>
-                    <td><input type="checkbox" id="done_48" name="done48" /></td>
+                    <td><input type="checkbox" id="done_48" name="done_48" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Paola_and_Narine" title="Paola and Narine">Paola and Narine</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Narine" title="Narine">Narine</a></td>
@@ -575,7 +649,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_49" name="have_49" /></td>
-                    <td><input type="checkbox" id="done_49" name="done49" /></td>
+                    <td><input type="checkbox" id="done_49" name="done_49" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Lost_Pendant" title="The Lost Pendant">The Lost Pendant</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Missing_in_Action_(XC1)" title="Missing in Action (XC1)">Missing in Action</a></i></td>
                     <td> Defence Force Soldier</td>
@@ -584,7 +658,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_50" name="have_50" /></td>
-                    <td><input type="checkbox" id="done_50" name="done50" /></td>
+                    <td><input type="checkbox" id="done_50" name="done_50" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Plan_-_Preparation" title="The Plan - Preparation">The Plan - Preparation</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Sesame" title="Sesame">Sesame</a></td>
@@ -593,7 +667,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_51" name="have_51" /></td>
-                    <td><input type="checkbox" id="done_51" name="done51" /></td>
+                    <td><input type="checkbox" id="done_51" name="done_51" /></td>
                     <td> ☆1½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Suffering" title="A Young Captain's Suffering">A Young Captain's Suffering</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Request" title="A Young Captain's Request">A Young Captain's Request</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Emmy_Leater" title="Emmy Leater">Emmy Leater</a></td>
@@ -602,7 +676,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_52" name="have_52" /></td>
-                    <td><input type="checkbox" id="done_52" name="done52" /></td>
+                    <td><input type="checkbox" id="done_52" name="done_52" /></td>
                     <td> ☆2</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Rise" title="A Young Captain's Rise">A Young Captain's Rise</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Suffering" title="A Young Captain's Suffering">A Young Captain's Suffering</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Emmy_Leater" title="Emmy Leater">Emmy Leater</a></td>
@@ -611,7 +685,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_53" name="have_53" /></td>
-                    <td><input type="checkbox" id="done_53" name="done53" /></td>
+                    <td><input type="checkbox" id="done_53" name="done_53" /></td>
                     <td> ☆2</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Overworked_and_Underpaid" title="Overworked and Underpaid">Overworked and Underpaid</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Curry_Conundrum" title="A Curry Conundrum">A Curry Conundrum</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Giorgio" title="Giorgio">Giorgio</a></td>
@@ -620,7 +694,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_54" name="have_54" /></td>
-                    <td><input type="checkbox" id="done_54" name="done54" /></td>
+                    <td><input type="checkbox" id="done_54" name="done_54" /></td>
                     <td> ☆2</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Romantic_Notions_of_a_Boy" title="Romantic Notions of a Boy">Romantic Notions of a Boy</a><br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Romantic_Notions_of_a_Girl" title="Romantic Notions of a Girl">Romantic Notions of a Girl</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Andreas" title="Andreas">Andreas</a></td>
@@ -635,7 +709,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_55" name="have_55" /></td>
-                    <td><input type="checkbox" id="done_55" name="done55" /></td>
+                    <td><input type="checkbox" id="done_55" name="done_55" /></td>
                     <td> ☆2</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Romantic_Notions_of_a_Girl" title="Romantic Notions of a Girl">Romantic Notions of a Girl</a><br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Romantic_Notions_of_a_Boy" title="Romantic Notions of a Boy">Romantic Notions of a Boy</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Monica_(XC1)" title="Monica (XC1)">Monica</a></td>
@@ -650,7 +724,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_56" name="have_56" /></td>
-                    <td><input type="checkbox" id="done_56" name="done56" /></td>
+                    <td><input type="checkbox" id="done_56" name="done_56" /></td>
                     <td> ☆2</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Plan_-_The_Night_Before" title="The Plan - The Night Before">The Plan - The Night Before</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Plan_-_Preparation" title="The Plan - Preparation">The Plan - Preparation</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Sesame" title="Sesame">Sesame</a></td>
@@ -659,7 +733,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_57" name="have_57" /></td>
-                    <td><input type="checkbox" id="done_57" name="done57" /></td>
+                    <td><input type="checkbox" id="done_57" name="done_57" /></td>
                     <td> ☆3</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Plan_-_Execution" title="The Plan - Execution">The Plan - Execution</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Plan_-_The_Night_Before" title="The Plan - The Night Before">The Plan - The Night Before</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Sesame" title="Sesame">Sesame</a></td>
@@ -671,7 +745,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_58" name="have_58" /></td>
-                    <td><input type="checkbox" id="done_58" name="done58" /></td>
+                    <td><input type="checkbox" id="done_58" name="done_58" /></td>
                     <td> ☆3</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Jackson%27s_Awakening" title="Jackson's Awakening">Jackson's Awakening</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Jackson" title="Jackson">Jackson</a></td>
@@ -680,7 +754,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_59" name="have_59" /></td>
-                    <td><input type="checkbox" id="done_59" name="done59" /></td>
+                    <td><input type="checkbox" id="done_59" name="done_59" /></td>
                     <td> ☆3</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Out-of-Luck_Giorgio" title="Out-of-Luck Giorgio">Out-of-Luck Giorgio</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Overworked_and_Underpaid" title="Overworked and Underpaid">Overworked and Underpaid</a></i> route B<br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Pestering_Paola" title="Pestering Paola">Pestering Paola</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Giorgio" title="Giorgio">Giorgio</a></td>
@@ -689,7 +763,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_60" name="have_60" /></td>
-                    <td><input type="checkbox" id="done_60" name="done60" /></td>
+                    <td><input type="checkbox" id="done_60" name="done_60" /></td>
                     <td> ☆3</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Pestering_Paola" title="Pestering Paola">Pestering Paola</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Overworked_and_Underpaid" title="Overworked and Underpaid">Overworked and Underpaid</a></i> route A<br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Out-of-Luck_Giorgio" title="Out-of-Luck Giorgio">Out-of-Luck Giorgio</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Giorgio" title="Giorgio">Giorgio</a></td>
@@ -698,7 +772,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_61" name="have_61" /></td>
-                    <td><input type="checkbox" id="done_61" name="done61" /></td>
+                    <td><input type="checkbox" id="done_61" name="done_61" /></td>
                     <td> ☆3½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Jackson_the_Cook" title="Jackson the Cook">Jackson the Cook</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Jackson%27s_Awakening" title="Jackson's Awakening">Jackson's Awakening</a></i> route B<br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Jackson_the_Poet" title="Jackson the Poet">Jackson the Poet</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Jackson" title="Jackson">Jackson</a></td>
@@ -707,7 +781,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_62" name="have_62" /></td>
-                    <td><input type="checkbox" id="done_62" name="done62" /></td>
+                    <td><input type="checkbox" id="done_62" name="done_62" /></td>
                     <td> ☆3½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Jackson_the_Poet" title="Jackson the Poet">Jackson the Poet</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Jackson%27s_Awakening" title="Jackson's Awakening">Jackson's Awakening</a></i> route A<br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Jackson_the_Cook" title="Jackson the Cook">Jackson the Cook</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Jackson" title="Jackson">Jackson</a></td>
@@ -719,7 +793,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_63" name="have_63" /></td>
-                    <td><input type="checkbox" id="done_63" name="done63" /></td>
+                    <td><input type="checkbox" id="done_63" name="done_63" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Mysterious_Light" title="A Mysterious Light">A Mysterious Light</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Kenny_Rohan" title="Kenny Rohan">Kenny Rohan</a></td>
@@ -728,7 +802,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_64" name="have_64" /></td>
-                    <td><input type="checkbox" id="done_64" name="done64" /></td>
+                    <td><input type="checkbox" id="done_64" name="done_64" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Out_Like_a_Light%3F" title="Out Like a Light?">Out Like a Light?</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Mysterious_Light" title="A Mysterious Light">A Mysterious Light</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Kenny_Rohan" title="Kenny Rohan">Kenny Rohan</a></td>
@@ -740,7 +814,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_65" name="have_65" /></td>
-                    <td><input type="checkbox" id="done_65" name="done65" /></td>
+                    <td><input type="checkbox" id="done_65" name="done_65" /></td>
                     <td> ☆4½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/D%C3%A9sir%C3%A9e%27s_Future" title="Désirée's Future">Désirée's Future</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Jackson%27s_Awakening" title="Jackson's Awakening">Jackson's Awakening</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/D%C3%A9sir%C3%A9e" title="Désirée">Désirée</a></td>
@@ -749,7 +823,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_66" name="have_66" /></td>
-                    <td><input type="checkbox" id="done_66" name="done66" /></td>
+                    <td><input type="checkbox" id="done_66" name="done_66" /></td>
                     <td> ☆5</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Betty%27s_Gift" title="Betty's Gift">Betty's Gift</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/D%C3%A9sir%C3%A9e%27s_Future" title="Désirée's Future">Désirée's Future</a></i> route A<br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/D%C3%A9sir%C3%A9e%27s_Apology" title="Désirée's Apology">Désirée's Apology</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Betty" title="Betty">Betty</a></td>
@@ -758,7 +832,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_67" name="have_67" /></td>
-                    <td><input type="checkbox" id="done_67" name="done67" /></td>
+                    <td><input type="checkbox" id="done_67" name="done_67" /></td>
                     <td> ☆5</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/D%C3%A9sir%C3%A9e%27s_Apology" title="Désirée's Apology">Désirée's Apology</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/D%C3%A9sir%C3%A9e%27s_Future" title="Désirée's Future">Désirée's Future</a></i> route B<br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Betty%27s_Gift" title="Betty's Gift">Betty's Gift</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/D%C3%A9sir%C3%A9e" title="Désirée">Désirée</a></td>
@@ -770,7 +844,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_68" name="have_68" /></td>
-                    <td><input type="checkbox" id="done_68" name="done68" /></td>
+                    <td><input type="checkbox" id="done_68" name="done_68" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Gem_Man%27s_Invention" title="The Gem Man's Invention">The Gem Man's Invention</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Gem_Man" title="Gem Man">Gem Man </a></td>
@@ -782,7 +856,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_69" name="have_69" /></td>
-                    <td><input type="checkbox" id="done_69" name="done69" /></td>
+                    <td><input type="checkbox" id="done_69" name="done_69" /></td>
                     <td> ☆3</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Challenge" title="A Young Captain's Challenge">A Young Captain's Challenge</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Rise" title="A Young Captain's Rise">A Young Captain's Rise</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Emmy_Leater" title="Emmy Leater">Emmy Leater</a></td>
@@ -794,7 +868,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_70" name="have_70" /></td>
-                    <td><input type="checkbox" id="done_70" name="done70" /></td>
+                    <td><input type="checkbox" id="done_70" name="done_70" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Old_Soldier%27s_Test" title="The Old Soldier's Test">The Old Soldier's Test</a></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Jan" title="Jan">Jan</a></td>
@@ -806,7 +880,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_71" name="have_71" /></td>
-                    <td><input type="checkbox" id="done_71" name="done71" /></td>
+                    <td><input type="checkbox" id="done_71" name="done_71" /></td>
                     <td> ☆2½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Big_Brother%27s_Fight" title="A Big Brother's Fight">A Big Brother's Fight</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Biscuits_for_a_Grandson" title="Biscuits for a Grandson">Biscuits for a Grandson</a></i><br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Little_Brother%27s_Fight" title="A Little Brother's Fight">A Little Brother's Fight</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Zukazu" title="Zukazu">Zukazu</a></td>
@@ -821,7 +895,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_72" name="have_72" /></td>
-                    <td><input type="checkbox" id="done_72" name="done72" /></td>
+                    <td><input type="checkbox" id="done_72" name="done_72" /></td>
                     <td> ☆2½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Little_Brother%27s_Fight" title="A Little Brother's Fight">A Little Brother's Fight</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Big_Brother%27s_Fight" title="A Big Brother's Fight">A Big Brother's Fight</a></i><br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Big_Brother%27s_Fight" title="A Big Brother's Fight">A Big Brother's Fight</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Jiroque" title="Jiroque">Jiroque</a></td>
@@ -836,7 +910,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_73" name="have_73" /></td>
-                    <td><input type="checkbox" id="done_73" name="done73" /></td>
+                    <td><input type="checkbox" id="done_73" name="done_73" /></td>
                     <td> ☆3½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Place_to_Come_Home_to" title="A Place to Come Home to">A Place to Come Home to</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Big_Brother%27s_Fight" title="A Big Brother's Fight">A Big Brother's Fight</a></i><br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Thawing_Relations" title="Thawing Relations">Thawing Relations</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Jiroque" title="Jiroque">Jiroque</a></td>
@@ -845,7 +919,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_74" name="have_74" /></td>
-                    <td><input type="checkbox" id="done_74" name="done74" /></td>
+                    <td><input type="checkbox" id="done_74" name="done_74" /></td>
                     <td> ☆3½</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Thawing_Relations" title="Thawing Relations">Thawing Relations</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Little_Brother%27s_Fight" title="A Little Brother's Fight">A Little Brother's Fight</a></i><br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Place_to_Come_Home_to" title="A Place to Come Home to">A Place to Come Home to</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Zukazu" title="Zukazu">Zukazu</a></td>
@@ -857,7 +931,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_75" name="have_75" /></td>
-                    <td><input type="checkbox" id="done_75" name="done75" /></td>
+                    <td><input type="checkbox" id="done_75" name="done_75" /></td>
                     <td> --</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Token_of_Friendship" title="A Token of Friendship">A Token of Friendship</a></td>
                     <td> Shulk (Weapon Dev. Lab)</td>
@@ -866,7 +940,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_76" name="have_76" /></td>
-                    <td><input type="checkbox" id="done_76" name="done76" /></td>
+                    <td><input type="checkbox" id="done_76" name="done_76" /></td>
                     <td> ☆4</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Revival" title="A Young Captain's Revival">A Young Captain's Revival</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Challenge" title="A Young Captain's Challenge">A Young Captain's Challenge</a></i> route A<br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Trust" title="A Young Captain's Trust">A Young Captain's Trust</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Miller" title="Miller">Miller</a></td>
@@ -875,7 +949,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_77" name="have_77" /></td>
-                    <td><input type="checkbox" id="done_77" name="done77" /></td>
+                    <td><input type="checkbox" id="done_77" name="done_77" /></td>
                     <td> ☆4</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Trust" title="A Young Captain's Trust">A Young Captain's Trust</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Challenge" title="A Young Captain's Challenge">A Young Captain's Challenge</a></i> route B<br>&nbsp;EXCL: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Revival" title="A Young Captain's Revival">A Young Captain's Revival</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Miller" title="Miller">Miller</a></td>
@@ -884,7 +958,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_78" name="have_78" /></td>
-                    <td><input type="checkbox" id="done_78" name="done78" /></td>
+                    <td><input type="checkbox" id="done_78" name="done_78" /></td>
                     <td> ☆4</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Elite_Captain%27s_Anguish" title="The Elite Captain's Anguish">The Elite Captain's Anguish</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Trust" title="A Young Captain's Trust">A Young Captain's Trust</a></i> or <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Revival" title="A Young Captain's Revival">A Young Captain's Revival</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Raoul" title="Raoul">Raoul</a></td>
@@ -893,7 +967,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_79" name="have_79" /></td>
-                    <td><input type="checkbox" id="done_79" name="done79" /></td>
+                    <td><input type="checkbox" id="done_79" name="done_79" /></td>
                     <td> ☆4</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Getting_to_Know_Dorothy" title="Getting to Know Dorothy">Getting to Know Dorothy</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Elite_Captain%27s_Anguish" title="The Elite Captain's Anguish">The Elite Captain's Anguish</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Dorothy_(XC1)" title="Dorothy (XC1)">Dorothy</a></td>
@@ -901,8 +975,8 @@
                     <td> 20,000 EXP<br>18,500 G<br><a target="_blank" href="http://xenoblade.wikia.com/wiki/Ether_Def_Up" title="Ether Def Up">Ether Def Up V</a><br><a target="_blank" href="http://xenoblade.wikia.com/wiki/Ether_Up" title="Ether Up">Ether Up VI</a></td>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" id="have_50" name="have_50" /></td>
-                    <td><input type="checkbox" id="done_50" name="done50" /></td>
+                    <td><input type="checkbox" id="have_80" name="have_80" /></td>
+                    <td><input type="checkbox" id="done_80" name="done_80" /></td>
                     <td> ☆4</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Getting_to_Know_Minnie" title="Getting to Know Minnie">Getting to Know Minnie</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/The_Elite_Captain%27s_Anguish" title="The Elite Captain's Anguish">The Elite Captain's Anguish</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Minnie" title="Minnie">Minnie</a></td>
@@ -911,7 +985,7 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_81" name="have_81" /></td>
-                    <td><input type="checkbox" id="done_81" name="done81" /></td>
+                    <td><input type="checkbox" id="done_81" name="done_81" /></td>
                     <td> ☆4¼</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Birthday_Shoes" title="Birthday Shoes">Birthday Shoes</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Education-Crazy_Suzanna" title="Education-Crazy Suzanna">Education-Crazy Suzanna</a></i><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Trust" title="A Young Captain's Trust">A Young Captain's Trust</a></i> or <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/A_Young_Captain%27s_Revival" title="A Young Captain's Revival">A Young Captain's Revival</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Kantz" title="Kantz">Kantz</a></td>
@@ -920,12 +994,151 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" id="have_82" name="have_82" /></td>
-                    <td><input type="checkbox" id="done_82" name="done82" /></td>
+                    <td><input type="checkbox" id="done_82" name="done_82" /></td>
                     <td> ☆4¼</td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Friendship_Tokens" title="Friendship Tokens">Friendship Tokens</a><br>&nbsp;REQ: <i><a target="_blank" href="http://xenoblade.wikia.com/wiki/Pride_and_Courage" title="Pride and Courage">Pride and Courage</a></i></td>
                     <td> <a target="_blank" href="http://xenoblade.wikia.com/wiki/Moritz" title="Moritz">Moritz</a></td>
                     <td> Collect<br>(Lv.95)</td>
                     <td> +250 Affinity<br>65,000 EXP<br>330 G<br><a target="_blank" href="http://xenoblade.wikia.com/wiki/AP_Up" title="AP Up">AP Up V</a><br><a target="_blank" href="http://xenoblade.wikia.com/wiki/Friendship_Tokens_(item)" title="Friendship Tokens (item)">Friendship Tokens (item)</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <table id="Tephra_Cave" name="Tephra Cave Quests" class="xc1 questlist chronological">
+            <tbody>
+                <tr>
+                    <th> Have </th>
+                    <th> Done </th>
+                    <th> ☆</th>
+                    <th> Quest Name</th>
+                    <th> Giver</th>
+                    <th> Type</th>
+                    <th> Rewards</th>
+                </tr>
+                <tr>
+                    <td colspan="7" class="event"> After beginning the trip to Colony 6</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_83" name="have_83" /></td>
+                    <td><input type="checkbox" id="done_83" name="done_83" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Arachno_Silk_Fundraising" title="Arachno Silk Fundraising">Arachno Silk Fundraising</a></td>
+                    <td> Defence Force Soldier</td>
+                    <td> Collect<br>(Lv.9)</td>
+                    <td> +100 Affinity<br>100 EXP<br>500 G<br><a href="http://xenoblade.wikia.com/wiki/Ranger_Gloves" title="Ranger Gloves">Ranger Gloves</a> (1 slot)</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_84" name="have_84" /></td>
+                    <td><input type="checkbox" id="done_84" name="done_84" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/A_Thank_You" title="A Thank You">A Thank You</a><br>&nbsp;REQ: <i><a href="http://xenoblade.wikia.com/wiki/Arachno_Silk_Fundraising" title="Arachno Silk Fundraising">Arachno Silk Fundraising</a></i></td>
+                    <td> Defence Force Soldier</td>
+                    <td> Errand</td>
+                    <td> +150 Affinity<br>100 EXP<br>1,500 G<br><a href="http://xenoblade.wikia.com/wiki/Topple_Resist_(XC1)" title="Topple Resist (XC1)">Topple Resist II</a></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_85" name="have_85" /></td>
+                    <td><input type="checkbox" id="done_85" name="done_85" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Collection_Quest_1_(Tephra_Cave)" title="Collection Quest 1 (Tephra Cave)">Collection Quest 1</a></td>
+                    <td> Defence Force Soldier</td>
+                    <td> Collect</td>
+                    <td> +50 Affinity<br>1,000 G</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_86" name="have_86" /></td>
+                    <td><input type="checkbox" id="done_86" name="done_86" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Collection_Quest_2_(Tephra_Cave)" title="Collection Quest 2 (Tephra Cave)">Collection Quest 2</a></td>
+                    <td> Defence Force Soldier</td>
+                    <td> Collect</td>
+                    <td> +50 Affinity<br>1,500 G</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_87" name="have_87" /></td>
+                    <td><input type="checkbox" id="done_87" name="done_87" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Material_Quest_1_(Tephra_Cave)" title="Material Quest 1 (Tephra Cave)">Material Quest 1</a></td>
+                    <td> Defence Force Soldier</td>
+                    <td> Collect<br>(Lv.11)</td>
+                    <td> +50 Affinity<br>1,200 G</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_88" name="have_88" /></td>
+                    <td><input type="checkbox" id="done_88" name="done_88" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Material_Quest_2_(Tephra_Cave)" title="Material Quest 2 (Tephra Cave)">Material Quest 2</a></td>
+                    <td> Defence Force Soldier</td>
+                    <td> Collect<br>(Lv.12)</td>
+                    <td> +50 Affinity<br>1,500 G</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_89" name="have_89" /></td>
+                    <td><input type="checkbox" id="done_89" name="done_89" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Missing_in_Action_(XC1)" title="Missing in Action (XC1)">Missing in Action</a></td>
+                    <td> Defence Force Soldier</td>
+                    <td> Errand</td>
+                    <td> +100 Affinity<br>50 EXP<br>800 G<br><a href="http://xenoblade.wikia.com/wiki/Leather_Top" title="Leather Top">Leather Top</a> (0 slots)<br><a href="http://xenoblade.wikia.com/wiki/Leather_Bottoms" title="Leather Bottoms">Leather Bottoms</a> (0 slots)</td>
+                </tr>
+                <tr>
+                    <td colspan="7" class="event"> After reaching Vilia Lake in Tephra Cave</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_90" name="have_90" /></td>
+                    <td><input type="checkbox" id="done_90" name="done_90" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Clearing_Obstructions" title="Clearing Obstructions">Clearing Obstructions</a></td>
+                    <td> Defence Force Soldier</td>
+                    <td> Battle<br>(Lv.11)</td>
+                    <td> +200 Affinity<br>200 EXP<br>2,500 G<br><a href="http://xenoblade.wikia.com/wiki/Bleed_Defence" title="Bleed Defence">Bleed Defence III</a></td>
+                </tr>
+                <tr>
+                    <td colspan="7" class="event"> After Mechonis Core</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_91" name="have_91" /></td>
+                    <td><input type="checkbox" id="done_91" name="done_91" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/The_Book_of_Bafalgar" title="The Book of Bafalgar">The Book of Bafalgar</a></td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Shura" title="Shura">Shura</a></td>
+                    <td> Collect</td>
+                    <td> +100 Affinity</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_92" name="have_92" /></td>
+                    <td><input type="checkbox" id="done_92" name="done_92" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/The_Blood_of_Bafalgar" title="The Blood of Bafalgar">The Blood of Bafalgar</a><br>&nbsp;REQ: <i><a href="http://xenoblade.wikia.com/wiki/The_Book_of_Bafalgar" title="The Book of Bafalgar">The Book of Bafalgar</a></i></td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Shura" title="Shura">Shura</a></td>
+                    <td> Battle<br>(Lv.97)</td>
+                    <td> +100 Affinity</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_93" name="have_93" /></td>
+                    <td><input type="checkbox" id="done_93" name="done_93" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/The_Path_of_Bafalgar" title="The Path of Bafalgar">The Path of Bafalgar</a><br>&nbsp;REQ: <i><a href="http://xenoblade.wikia.com/wiki/The_Blood_of_Bafalgar" title="The Blood of Bafalgar">The Blood of Bafalgar</a></i></td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Shura" title="Shura">Shura</a></td>
+                    <td> Errand</td>
+                    <td> +100 Affinity</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_94" name="have_94" /></td>
+                    <td><input type="checkbox" id="done_94" name="done_94" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/The_Coffin_of_Bafalgar" title="The Coffin of Bafalgar">The Coffin of Bafalgar</a><br>&nbsp;REQ: <i><a href="http://xenoblade.wikia.com/wiki/The_Path_of_Bafalgar" title="The Path of Bafalgar">The Path of Bafalgar</a></i></td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Shura" title="Shura">Shura</a></td>
+                    <td> Errand</td>
+                    <td> +150 Affinity</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="have_95" name="have_95" /></td>
+                    <td><input type="checkbox" id="done_95" name="done_95" /></td>
+                    <td> —</td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/The_Gratitude_of_Bafalgar" title="The Gratitude of Bafalgar">The Gratitude of Bafalgar</a><br>&nbsp;REQ: <i><a href="http://xenoblade.wikia.com/wiki/The_Coffin_of_Bafalgar" title="The Coffin of Bafalgar">The Coffin of Bafalgar</a></i></td>
+                    <td> <a href="http://xenoblade.wikia.com/wiki/Shura" title="Shura">Shura</a></td>
+                    <td> Errand</td>
+                    <td> +300 Affinity<br>80,000 EXP<br>35,000 G<br><a href="http://xenoblade.wikia.com/wiki/Aura_Heal" title="Aura Heal">Aura Heal IV</a><br><a href="http://xenoblade.wikia.com/wiki/Auto-Heal_Up" title="Auto-Heal Up">Auto-Heal Up III</a><br><a href="http://xenoblade.wikia.com/wiki/Truth_of_the_Giants" title="Truth of the Giants">Truth of the Giants</a></td>
                 </tr>
             </tbody>
         </table>
