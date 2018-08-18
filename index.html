@@ -9,7 +9,10 @@
             }).get();
 
             console.log('Debug');
-            console.log($checkboxes);
+            console.log(checkboxes);
+            $checkboxes.each(function() {
+                console.log(this.id); 
+            });
 
 			$checkboxes.on("change", function(){ 
 			  $checkboxes.each(function(){
