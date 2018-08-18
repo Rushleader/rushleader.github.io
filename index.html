@@ -6,7 +6,9 @@
     		var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
 			var checkboxes = $("input");
 
-            console.log(checkboxes); 
+            checkboxes.each(function()){
+                console.log(this.id); 
+            });
 
 			checkboxes.on("change", function(){ 
 			  checkboxes.each(function(){
