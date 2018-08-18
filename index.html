@@ -16,7 +16,7 @@
                     $("#" + key).prop('checked', value);
                 });
 
-                // Add the ON trigger
+                // Add the ON trigger to store all check data
                 checkboxes.on("change", function(){ 
                     checkboxes.each(function(){
                         checkboxValues[this.id] = this.checked;
@@ -28,6 +28,7 @@
                 // List all the Quest locations and add them to the selection
                 var zones = $('.questlist');
                 zones.each(function(){
+                    // Create the option
                     var e = document.createElement('option');
                     e.value = this.id;
                     e.label = $(this).attr('name');
