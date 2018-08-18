@@ -4,9 +4,11 @@
     	<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
     	<script>
             $(document).ready(function() {
+                // Retrieve storage and items
         		var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
     			var checkboxes = $(':input:checkbox');
 
+                // Reload the values into the checkboxes
                 $.each(checkboxValues, function(key, value) {
                     $("#" + key).prop('checked', value);
                 });
