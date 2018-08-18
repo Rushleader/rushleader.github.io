@@ -9,9 +9,15 @@
                     return $(this);
                 }).get(); 
 
-                console.log('Debug');
-                console.log(checkboxes);
-                console.log(typeof checkboxes);
+                $(':input:checkbox').on('change', function(){
+                    checkboxValues[this.id] = this.checked;
+                    localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
+                });
+
+
+       //          // Debugging
+       //          console.log('Debug');
+       //          console.log(checkboxes);
 
     			// checkboxes.on("change", function(){ 
     			//   checkboxes.each(function(){
