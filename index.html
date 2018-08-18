@@ -5,11 +5,11 @@
     	<script>
     		var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
 			var $checkboxes = $(":checkbox");
-			alert(checkboxValues);
 
 			$checkboxes.on("change", function(){
 			  $checkboxes.each(function(){
 			    checkboxValues[this.id] = this.checked;
+                alert(this.id);
 			  });
 			  localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
 			});
