@@ -5,26 +5,19 @@
     	<script>
             $(document).ready(function() {
         		var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
-    			var checkboxes = $(':input:checkbox').map(function() {
-                    return $(this);
-                }).get(); 
+    			var checkboxes = $(':input:checkbox');
 
-                $(':input:checkbox').on('change', function(){
-                    checkboxValues[this.id] = this.checked;
+                $.each(checkboxValues, function(key, value) {
+                    $("#" + key).prop('checked', value);
+                });
+
+                checkboxes.on("change", function(){ 
+                    checkboxes.each(function(){
+                        checkboxValues[this.id] = this.checked;
+                    });
                     localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
-                }); 
-
-
-       //          // Debugging sad
-       //          console.log('Debug');
-       //          console.log(checkboxes);
-
-    			// checkboxes.on("change", function(){ 
-    			//   checkboxes.each(function(){
-    			//     checkboxValues[this.id] = this.checked;
-    			//   });
-    			//   localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
-    			// });
+                    console.log(checkboxValues);
+                });
             });  
     	</script>
     	<style>
