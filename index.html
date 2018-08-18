@@ -4,12 +4,13 @@
     	<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
     	<script>
     		var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
-			var $checkboxes = $("#container :checkbox");
+			var checkboxes = $("#container :checkbox");
 
-            console.log($checkboxes); 
+            console.log(checkboxes); 
+            console.log(check)
 
-			$checkboxes.on("change", function(){ 
-			  $checkboxes.each(function(){
+			checkboxes.on("change", function(){ 
+			  checkboxes.each(function(){
 			    checkboxValues[this.id] = this.checked;
                 alert(this.id);
 			  });
