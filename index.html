@@ -11,16 +11,14 @@
 
                 console.log('Debug');
                 console.log(checkboxes);
-                checkboxes.each(function() {
-                    console.log(this.id); 
-                });
- 
-    			checkboxes.on("change", function(){ 
-    			  checkboxes.each(function(){
-    			    checkboxValues[this.id] = this.checked;
-    			  });
-    			  localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
-    			});
+                console.log(typeof checkboxes);
+
+    			// checkboxes.on("change", function(){ 
+    			//   checkboxes.each(function(){
+    			//     checkboxValues[this.id] = this.checked;
+    			//   });
+    			//   localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
+    			// });
             }); 
     	</script>
     	<style>
